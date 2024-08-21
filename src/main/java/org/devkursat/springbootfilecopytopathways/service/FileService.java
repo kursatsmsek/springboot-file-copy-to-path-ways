@@ -18,6 +18,7 @@ public class FileService {
             case IO_API -> saveFile_IoAPI(multipartFile);
             case NIO_API -> saveFile_NioAPI(multipartFile);
             case COMMONS_IO -> saveFile_CommonsIO(multipartFile);
+            case GUAVA -> saveFile_Guava(multipartFile);
         };
     }
 
@@ -58,5 +59,16 @@ public class FileService {
         FileUtils.copyFile(original, copied);
 
         return "CommonsIO ile kopyalanan dosya adı: " + copied.getName();
+    }
+
+    private String saveFile_Guava(MultipartFile multipartFile) throws IOException {
+        File copied = new File("src/main/resources/files/" + multipartFile.getOriginalFilename());
+
+        File original = File.createTempFile("temp", multipartFile.getOriginalFilename());
+        multipartFile.transferTo(original);
+
+        Files.copy(original.toPath(), copied.toPath());
+
+        return "Guava ile kopyalanan dosya adı: " + copied.getName();
     }
 }
