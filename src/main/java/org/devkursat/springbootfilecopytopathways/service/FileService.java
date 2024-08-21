@@ -1,14 +1,25 @@
 package org.devkursat.springbootfilecopytopathways.service;
 
+import org.devkursat.springbootfilecopytopathways.model.CopyingWay;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class FileService {
 
-    public String saveFile_IoAPI(MultipartFile multipartFile) throws IOException {
+    public String copyFile(MultipartFile multipartFile, CopyingWay copyingWay) throws IOException {
+        return switch (copyingWay) {
+            case IO_API -> saveFile_IoAPI(multipartFile);
+            case NIO_API -> saveFile_NioAPI(multipartFile);
+        };
+    }
+
+    private String saveFile_IoAPI(MultipartFile multipartFile) throws IOException {
         File copied = new File("src/main/resources/files/" + multipartFile.getOriginalFilename());
         try (
                 InputStream in = new BufferedInputStream(multipartFile.getInputStream());
@@ -22,6 +33,17 @@ public class FileService {
             }
         }
 
-        return "Yüklenen ve kopyalanan dosya adı: " + copied.getName();
+        return "IO ile kopyalanan dosya adı: " + copied.getName();
+    }
+
+    private String saveFile_NioAPI(MultipartFile multipartFile) throws IOException {
+        Path copied = Paths.get("src/main/resources/files/" + multipartFile.getOriginalFilename());
+
+        Path originalPath = Files.createTempFile("temp", multipartFile.getOriginalFilename());
+        multipartFile.transferTo(originalPath.toFile());
+
+        Files.copy(originalPath, copied);
+
+        return "NIO ile kopyalanan dosya adı: " + copied.getFileName();
     }
 }

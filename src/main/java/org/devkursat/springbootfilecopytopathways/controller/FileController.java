@@ -1,6 +1,7 @@
 package org.devkursat.springbootfilecopytopathways.controller;
 
 import lombok.AllArgsConstructor;
+import org.devkursat.springbootfilecopytopathways.model.CopyingWay;
 import org.devkursat.springbootfilecopytopathways.service.FileService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
-        return ResponseEntity.ok().body(fileService.saveFile_IoAPI(file));
+    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("type") CopyingWay copyingWay) throws IOException {
+        return ResponseEntity.ok().body(fileService.copyFile(file, copyingWay));
     }
 }
