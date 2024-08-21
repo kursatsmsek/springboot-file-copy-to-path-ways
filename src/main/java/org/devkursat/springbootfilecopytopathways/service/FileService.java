@@ -1,5 +1,6 @@
 package org.devkursat.springbootfilecopytopathways.service;
 
+import org.apache.commons.io.FileUtils;
 import org.devkursat.springbootfilecopytopathways.model.CopyingWay;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ public class FileService {
         return switch (copyingWay) {
             case IO_API -> saveFile_IoAPI(multipartFile);
             case NIO_API -> saveFile_NioAPI(multipartFile);
+            case COMMONS_IO -> saveFile_CommonsIO(multipartFile);
         };
     }
 
@@ -45,5 +47,16 @@ public class FileService {
         Files.copy(originalPath, copied);
 
         return "NIO ile kopyalanan dosya adı: " + copied.getFileName();
+    }
+
+    private String saveFile_CommonsIO(MultipartFile multipartFile) throws IOException {
+        File copied = new File("src/main/resources/files/" + multipartFile.getOriginalFilename());
+
+        File original = File.createTempFile("temp", multipartFile.getOriginalFilename());
+        multipartFile.transferTo(original);
+
+        FileUtils.copyFile(original, copied);
+
+        return "CommonsIO ile kopyalanan dosya adı: " + copied.getName();
     }
 }
