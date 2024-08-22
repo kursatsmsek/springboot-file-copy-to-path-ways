@@ -14,9 +14,6 @@ Senaryo: Kodunuzu daha okunabilir ve bakımı kolay hale getirmek istediğiniz d
 Kullanım Alanı: Guava kütüphanesi, Google tarafından geliştirilen ve dosya işlemleri dahil olmak üzere birçok yardımcı fonksiyon sunan bir kütüphanedir.
 Senaryo: Guava'yı zaten projede kullanıyorsanız veya belirli dosya işlemleri için ek fonksiyonellikten faydalanmak istiyorsanız bu yöntemi tercih edebilirsiniz. Örneğin, dosya işlemleri sırasında Guava'nın sunduğu ek özelliklere (cache, concurrency, vb.) ihtiyaç duyduğunuz durumlarda bu yöntem kullanılabilir.
 
-Özet
-Basit ve eski yöntem: BufferedInputStream -> Küçük dosyalar, eski sistemlerle uyumluluk gerektiren durumlar.
-Standart ve güvenilir yöntem: NIO Files.copy() -> Genel dosya kopyalama işlemleri, dosya izinlerinin korunması gerektiğinde.
-Performans odaklı yöntem: NIO FileChannel -> Büyük dosyalar, belirli dosya bölümleriyle çalışma.
-Kolay ve okunabilir yöntem: Apache Commons IO FileUtils.copyFile() -> Basitlik, kod okunabilirliği, bakım kolaylığı.
-Ek özellikler sunan yöntem: Google Guava Files.copy() -> Projede Guava'nın sunduğu diğer özelliklerden faydalanmak.
+<img width="705" alt="Screen Shot 2024-08-22 at 11 14 57" src="https://github.com/user-attachments/assets/5186cb00-7636-4b47-bc9b-1dfb1f8888dc">
+
+
