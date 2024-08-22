@@ -4,5 +4,6 @@ public enum CopyingWay {
     IO_API,
     NIO_API,
     COMMONS_IO,
-    GUAVA
+    GUAVA,
+    NIO_CHANNEL
 }

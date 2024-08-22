@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,6 +20,7 @@ public class FileService {
             case NIO_API -> saveFile_NioAPI(multipartFile);
             case COMMONS_IO -> saveFile_CommonsIO(multipartFile);
             case GUAVA -> saveFile_Guava(multipartFile);
+            case NIO_CHANNEL -> saveFile_NioChannel(multipartFile);
         };
     }
 
@@ -48,6 +50,28 @@ public class FileService {
         Files.copy(originalPath, copied);
 
         return "NIO ile kopyalanan dosya adı: " + copied.getFileName();
+    }
+
+    private String saveFile_NioChannel(MultipartFile multipartFile) throws IOException {
+        FileChannel sourceChannel = null;
+        FileChannel destChannel = null;
+        File copied;
+        try {
+            File source = File.createTempFile("temp", null);
+            multipartFile.transferTo(source);
+
+            String copiedPath = "src/main/resources/files/" + multipartFile.getOriginalFilename();
+            copied = new File(copiedPath);
+
+            sourceChannel = new FileInputStream(source).getChannel();
+            destChannel = new FileOutputStream(copied).getChannel();
+            destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
+        } finally {
+            if (sourceChannel != null) sourceChannel.close();
+            if (destChannel != null) destChannel.close();
+        }
+
+        return "NIO-Channel ile kopyalanan dosya adı: " + copied.getName();
     }
 
     private String saveFile_CommonsIO(MultipartFile multipartFile) throws IOException {
